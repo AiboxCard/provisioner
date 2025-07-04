@@ -120,6 +120,7 @@
             </ul>
         </div>
         <div>
+            <h3>SNR:<label id="SNR">-</label></h3>
             <h3 data-lang="new_wifi">New WiFi</h3>
             <p class="error" style="color: red; text-align: center;" id="error">
             </p>
@@ -147,6 +148,14 @@
         const error = document.getElementById('error');
         const ssid = document.getElementById('ssid');
 
+        function updateSNR(){
+            fetch('/getSNR')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('SNR').innerHTML = data.SNR
+                });
+        }
+        updateSNR();
         function changeLanguage() {
             // Save language preference
             if (document.getElementById('language').value) {

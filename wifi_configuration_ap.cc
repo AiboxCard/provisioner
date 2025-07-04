@@ -16,6 +16,7 @@
 #include <cJSON.h>
 #include <esp_smartconfig.h>
 #include "ssid_manager.h"
+#include "../../components/Core/Core.h"
 
 #define TAG "WifiConfigurationAp"
 
@@ -290,6 +291,20 @@ void WifiConfigurationAp::StartWebServer()
         .user_ctx = this
     };
     ESP_ERROR_CHECK(httpd_register_uri_handler(server_, &scan));
+
+    httpd_uri_t getSNR = {
+        .uri = "/getSNR",
+        .method = HTTP_GET,
+        .handler = [](httpd_req_t *req) -> esp_err_t {
+            string response = string("{\"SNR\":\"")+Core::getSerialNumber()+string("\"}");
+            
+            httpd_resp_set_type(req, "application/json");
+            httpd_resp_send(req, response.c_str(), response.length());  
+            return ESP_OK;
+        },
+        .user_ctx = this
+    };
+    ESP_ERROR_CHECK(httpd_register_uri_handler(server_, &getSNR));
 
     // Register the form submission
     httpd_uri_t form_submit = {
