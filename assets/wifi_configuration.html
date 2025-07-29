@@ -105,7 +105,7 @@
 <body>
     <div class="language-switch">
         <select id="language" onchange="changeLanguage()">
-            <option value="">文A</option>
+            <option value="">SK</option>
         </select>
     </div>
     
@@ -120,7 +120,7 @@
             </ul>
         </div>
         <div>
-            <h3>SNR:<label id="SNR">-</label></h3>
+            <h4>SNR:<label id="SNR">-</label> Firmware:<label id="fwVersion">-</label></h4>
             <h3 data-lang="new_wifi">New WiFi</h3>
             <p class="error" style="color: red; text-align: center;" id="error">
             </p>
@@ -155,7 +155,16 @@
                     document.getElementById('SNR').innerHTML = data.SNR
                 });
         }
+
+        function updateFWVersion(){
+            fetch('/getFWVersion')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('fwVersion').innerHTML = data.FWVersion
+            });
+        }
         updateSNR();
+        updateFWVersion();
         function changeLanguage() {
             // Save language preference
             if (document.getElementById('language').value) {
