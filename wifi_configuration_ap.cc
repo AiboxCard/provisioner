@@ -103,7 +103,7 @@ std::string WifiConfigurationAp::GetSsid()
 #if CONFIG_IDF_TARGET_ESP32P4
     esp_wifi_get_mac(WIFI_IF_AP, mac);
 #else
-    ESP_ERROR_CHECK(esp_read_mac(mac, ESP_MAC_WIFI_SOFTAP));
+    ESP_ERROR_CHECK(esp_read_mac(mac, ESP_MAC_WIFI_STA));
 #endif
     char ssid[32];
     snprintf(ssid, sizeof(ssid), "%s-%02X%02X", ssid_prefix_.c_str(), mac[4], mac[5]);
